@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.result.PageResult;
 
@@ -21,4 +22,10 @@ public interface EmployeeService {
     PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 
     void startOrStop(Integer status, Long id);
+
+    Employee getById(Long id);
+
+    void setEmployee(EmployeeDTO employeeDTO);
+
+    void passwordEdit(PasswordEditDTO passwordEditDTO);
 }

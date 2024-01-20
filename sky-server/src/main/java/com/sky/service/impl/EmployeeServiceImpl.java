@@ -10,9 +10,11 @@ import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
+import com.sky.exception.PasswordEditFailedException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
@@ -93,13 +95,43 @@ public class EmployeeServiceImpl implements EmployeeService {
         return pageResult;
     }
 
-    @Override
     public void startOrStop(Integer status, Long id) {
         Employee employee = Employee.builder()
                 .status(status)
                 .id(id)
                 .build();
         employeeMapper.update(employee);
+    }
+
+    public Employee getById(Long id) {
+        Employee employee=employeeMapper.getById(id);
+        return employee;
+    }
+
+    public void setEmployee(EmployeeDTO employeeDTO) {
+        Employee employee=new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employee.setUpdateTime(LocalDateTime.now());
+        employeeMapper.update(employee);
+    }
+
+    /*
+     *修改员工密码
+     * 注：前端无法输入，此功能无法测试
+     */
+    public void passwordEdit(PasswordEditDTO passwordEditDTO) {
+        Employee employee=new Employee();
+        String oldPassword=employeeMapper.getById(passwordEditDTO.getEmpId()).getPassword();
+        String newPassword=passwordEditDTO.getNewPassword();
+        if (!DigestUtils.md5DigestAsHex(passwordEditDTO.getOldPassword().getBytes()).equals(oldPassword)){
+            throw new PasswordEditFailedException(MessageConstant.PASSWORD_ERROR);
+        }else {
+            employee.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
+            employee.setUpdateTime(LocalDateTime.now());
+            employee.setUpdateUser(BaseContext.getCurrentId());
+            employeeMapper.update(employee);
+        }
     }
 
 
