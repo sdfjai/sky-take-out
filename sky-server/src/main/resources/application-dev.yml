@@ -6,3 +6,8 @@ sky:
     database: sky_take_out
     username: root
     password: 123456
+  qiniuoss:
+    endpoint: s7n4nwvxb.hn-bkt.clouddn.com
+    access-key-id: xqa2uxgPhXgaiSbo5wzQNJ0ONv3NjSFxBbVKf4RJ
+    access-key-secret: KFAW7cDRgUttNLwbt1gv2XRDBkIKo3_-X6fuc296
+    bucket: sky-myitcast
