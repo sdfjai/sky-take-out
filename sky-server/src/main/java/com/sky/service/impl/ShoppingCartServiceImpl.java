@@ -56,4 +56,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCart.setCreateTime(LocalDateTime.now());
         shoppingCartMapper.insert(shoppingCart);
     }
+
+
+    public List<ShoppingCart> showShoppingCart() {
+        Long userId = BaseContext.getCurrentId();
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUserId(userId);
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+        return list;
+    }
+
+
+    public void deleteShoppingCart() {
+        Long id = BaseContext.getCurrentId();
+        shoppingCartMapper.delete(id);
+    }
 }
